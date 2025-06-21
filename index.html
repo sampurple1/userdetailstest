@@ -1,1 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Profiles</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f0f2f5;
+      margin: 0;
+      padding: 1rem;
+    }
+    .profile {
+      display: flex;
+      align-items: center;
+      background: white;
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1rem 0;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      margin-right: 1rem;
+      object-fit: cover;
+    }
+    .details {
+      display: flex;
+      flex-direction: column;
+    }
+    .username {
+      font-weight: bold;
+    }
+    .meta {
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>User Profiles</h1>
+  <div id="profiles"></div>
+
+  <script>
+    fetch('./userdetails.json')
+      .then(response => response.json())
+      .then(data => {
+        // Sort descending by daysAgo
+        data.sort((a, b) => b.daysAgo - a.daysAgo);
+
+        const container = document.getElementById('profiles');
+
+        data.forEach(user => {
+          const profile = document.createElement('div');
+          profile.className = 'profile';
+          profile.innerHTML = `
+            <img class="avatar" src="${user.author.avatar.permalink}" alt="${user.author.username}'s avatar">
+            <div class="details">
+              <div class="username">${user.author.name} (@${user.author.username})</div>
+              <div class="meta">Created at: ${new Date(user.createdAt).toLocaleString()}</div>
+              <div class="meta">Days ago: ${user.daysAgo}</div>
+            </div>
+          `;
+          container.appendChild(profile);
+        });
+      })
+      .catch(error => {
+        document.getElementById('profiles').textContent = "Failed to load user details.";
+        console.error('Error loading JSON:', error);
+      });
+  </script>
+
+</body>
+</html>
 
