@@ -44,24 +44,31 @@
   <h1>User Profiles</h1>
   <div id="profiles">Loading profiles...</div>
 
-  <script src="./userdetails.js"></script>
   <script>
-    const container = document.getElementById('profiles');
-    container.innerHTML = ''; // clear loading text
+    fetch('./userdetails.json')
+      .then(response => response.json())
+      .then(data => {
+        const container = document.getElementById('profiles');
+        container.innerHTML = ''; // clear "Loading..."
 
-    userData.forEach(user => {
-      const profile = document.createElement('div');
-      profile.className = 'profile';
-      profile.innerHTML = `
-        <img class="avatar" src="${user.author.avatar.permalink}" alt="${user.author.username}'s avatar">
-        <div class="details">
-          <div class="username">${user.author.name} (@${user.author.username})</div>
-          <div class="meta">Created at: ${new Date(user.createdAt).toLocaleString()}</div>
-          <div class="meta">Days ago: ${user.daysAgo}</div>
-        </div>
-      `;
-      container.appendChild(profile);
-    });
+        data.forEach(user => {
+          const profile = document.createElement('div');
+          profile.className = 'profile';
+          profile.innerHTML = `
+            <img class="avatar" src="${user.author.avatar.permalink}" alt="${user.author.username}'s avatar">
+            <div class="details">
+              <div class="username">${user.author.name} (@${user.author.username})</div>
+              <div class="meta">Created at: ${new Date(user.createdAt).toLocaleString()}</div>
+              <div class="meta">Days ago: ${user.daysAgo}</div>
+            </div>
+          `;
+          container.appendChild(profile);
+        });
+      })
+      .catch(error => {
+        document.getElementById('profiles').textContent = "Failed to load user details.";
+        console.error('Error loading JSON:', error);
+      });
   </script>
 
 </body>
