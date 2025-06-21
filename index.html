@@ -49,7 +49,7 @@
       .then(response => response.json())
       .then(data => {
         const container = document.getElementById('profiles');
-        container.innerHTML = ''; // clear "Loading..."
+        container.innerHTML = '';
 
         data.forEach(user => {
           const profile = document.createElement('div');
