@@ -2871,10 +2871,7 @@ const userData = [
       "username": "Tempestxyz",
       "name": "tempest",
       "avatar": {
-        "permalink": "https://disqus.com/api/users/avatars/Tempestxyz.jpg"
-      }
-    }
-  },
+   [
   {
     "id": "5035577442",
     "createdAt": "2020-08-18T18:29:37",
